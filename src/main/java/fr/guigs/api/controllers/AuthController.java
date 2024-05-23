@@ -2,7 +2,6 @@ package fr.guigs.api.controllers;
 
 
 import fr.guigs.api.configs.JWTUtil;
-import fr.guigs.api.models.Role;
 import fr.guigs.api.models.User;
 import fr.guigs.api.repositories.RoleRepository;
 import fr.guigs.api.repositories.UserRepository;
@@ -45,7 +44,7 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton((Role) roleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Role not found"))));
+        user.setRoles(Collections.singleton( roleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Role not found"))));
         userRepository.save(user);
         return "User registered successfully";
     }
