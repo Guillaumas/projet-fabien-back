@@ -2,6 +2,8 @@ package fr.guigs.api.controllers;
 
 
 import fr.guigs.api.configs.JWTUtil;
+import fr.guigs.api.exceptions.BadCredentialsException;
+import fr.guigs.api.exceptions.UserAlreadyExistsException;
 import fr.guigs.api.models.User;
 import fr.guigs.api.repositories.RoleRepository;
 import fr.guigs.api.repositories.UserRepository;
@@ -41,24 +43,34 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+
     @PostMapping("/register")
     public String register(@RequestBody User user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new UserAlreadyExistsException("Username already exists");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton( roleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Role not found"))));
+        user.setRoles(Collections.singleton(roleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Role not found"))));
         userRepository.save(user);
         return "User registered successfully";
     }
 
+
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody User user) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtUtil.generateJwtToken(user.getUsername());
-        Map<String, String> response = new HashMap<>();
-        response.put("token", jwt);
-        return response;
+            String jwt = jwtUtil.generateJwtToken(user.getUsername());
+            Map<String, String> response = new HashMap<>();
+            response.put("token", jwt);
+            return response;
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
     }
 }

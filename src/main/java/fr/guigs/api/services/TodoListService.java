@@ -1,14 +1,23 @@
 package fr.guigs.api.services;
 
+import fr.guigs.api.models.Task;
+import fr.guigs.api.models.TodoList;
+import fr.guigs.api.repositories.TaskRepository;
+import fr.guigs.api.repositories.TodoListRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TodoListService {
 
-    @Autowired
-    private TodoListRepository todoListRepository;
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TodoListRepository todoListRepository;
+    private final TaskRepository taskRepository;
+
+    public TodoListService(TodoListRepository todoListRepository, TaskRepository taskRepository) {
+        this.todoListRepository = todoListRepository;
+        this.taskRepository = taskRepository;
+    }
 
     public List<TodoList> findAll() {
         return todoListRepository.findAll();

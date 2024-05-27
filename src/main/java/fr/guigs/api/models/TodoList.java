@@ -16,5 +16,4 @@ public class TodoList {
 
     @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> tasks = new ArrayList<>();
-
 }

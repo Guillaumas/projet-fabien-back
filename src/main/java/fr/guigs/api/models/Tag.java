@@ -14,6 +14,4 @@ public class Tag {
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
-
-    // Getters and setters
 }

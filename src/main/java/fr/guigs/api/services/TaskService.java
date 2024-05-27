@@ -1,44 +1,28 @@
 package fr.guigs.api.services;
 
+import fr.guigs.api.models.Label;
 import fr.guigs.api.models.Task;
+import fr.guigs.api.repositories.LabelRepository;
 import fr.guigs.api.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final LabelRepository labelRepository;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, LabelRepository labelRepository) {
         this.taskRepository = taskRepository;
+        this.labelRepository = labelRepository;
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
-    }
-
-    public Task getTaskById(Long id) {
-        return taskRepository.findById(id).orElse(null);
-    }
-
-    public Task createTask(Task task) {
-        return taskRepository.save(task);
-    }
-
-    public Task updateTask(Long id, Task taskDetails) {
-        Task task = taskRepository.findById(id).orElse(null);
-        if (task != null) {
-            task.setTitle(taskDetails.getTitle());
-            task.setDescription(taskDetails.getDescription());
-            task.setCompleted(taskDetails.isCompleted());
-            return taskRepository.save(task);
-        }
-        return null;
-    }
-
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
+    public Label addLabelToTask(Long taskId, Label label) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+        task.getLabels().add(label);
+        label.getTasks().add(task);
+        labelRepository.save(label);
+        taskRepository.save(task);
+        return label;
     }
 }

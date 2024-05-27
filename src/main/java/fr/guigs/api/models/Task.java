@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -20,7 +18,11 @@ public class Task {
     @JoinColumn(name = "list_id")
     private TodoList todoList;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Tag> tags = new ArrayList<>();
-
+    @ManyToMany
+    @JoinTable(
+            name = "task_labels",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id")
+    )
+    private List<Label> labels = new ArrayList<>();
 }
