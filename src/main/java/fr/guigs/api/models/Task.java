@@ -25,4 +25,8 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "label_id")
     )
     private List<Label> labels = new ArrayList<>();
+
+    private String description;
+
+    private boolean done;
 }

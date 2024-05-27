@@ -7,6 +7,7 @@ import fr.guigs.api.exceptions.UserAlreadyExistsException;
 import fr.guigs.api.models.User;
 import fr.guigs.api.repositories.RoleRepository;
 import fr.guigs.api.repositories.UserRepository;
+import fr.guigs.api.services.TokenValidationService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,12 +36,15 @@ public class AuthController {
 
     private final JWTUtil jwtUtil;
 
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTUtil jwtUtil) {
+    private final TokenValidationService tokenValidationService;
+
+    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTUtil jwtUtil, TokenValidationService tokenValidationService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.tokenValidationService = tokenValidationService;
     }
 
 
@@ -72,5 +76,18 @@ public class AuthController {
         } catch (Exception e) {
             throw new BadCredentialsException("Invalid username or password");
         }
+    }
+
+    @PostMapping("/logout")
+    public String logout() {
+        SecurityContextHolder.clearContext();
+        return "Logout successful";
+    }
+
+    @PostMapping("/checkToken")
+    public Map<String, Boolean> checkToken(@RequestBody Map<String, String> body) {
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("valid", tokenValidationService.isTokenValid(body.get("token")));
+        return response;
     }
 }
