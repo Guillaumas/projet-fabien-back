@@ -27,6 +27,11 @@ public class TodoListController {
         return todoListService.save(todoList);
     }
 
+    @PutMapping("/{listId}")
+    public TodoList updateTodoList(@PathVariable Long listId, @RequestBody TodoList todoList) {
+        return todoListService.update(listId, todoList);
+    }
+
     @PostMapping("/{listId}/tasks")
     public Task addTaskToList(@PathVariable Long listId, @RequestBody Task task) {
         return todoListService.addTaskToList(listId, task);

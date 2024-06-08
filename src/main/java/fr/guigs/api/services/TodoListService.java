@@ -32,4 +32,10 @@ public class TodoListService {
         task.setTodoList(todoList);
         return taskRepository.save(task);
     }
+
+    public TodoList update(Long listId, TodoList todoList) {
+        TodoList existingTodoList = todoListRepository.findById(listId).orElseThrow(() -> new RuntimeException("List not found"));
+        existingTodoList.setTitle(todoList.getTitle());
+        return todoListRepository.save(existingTodoList);
+    }
 }

@@ -11,3 +11,12 @@ public class ApiApplication {
 	}
 
 }
+
+//todo ajouter un swagger
+//todo ajouter la pagination
+//todo ajouter le auth0
+//todo ajouter le cicd
+//todo ajouter le docker
+//todo amqp
+//todo ajouter le cache
+//todo graphql

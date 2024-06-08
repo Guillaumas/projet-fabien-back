@@ -13,10 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -78,16 +75,20 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/logout")
-    public String logout() {
-        SecurityContextHolder.clearContext();
-        return "Logout successful";
-    }
-
     @PostMapping("/checkToken")
     public Map<String, Boolean> checkToken(@RequestBody Map<String, String> body) {
         Map<String, Boolean> response = new HashMap<>();
         response.put("valid", tokenValidationService.isTokenValid(body.get("token")));
+        return response;
+    }
+
+    @PostMapping("/refreshToken")
+    public Map<String, String> refreshToken(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        String username = jwtUtil.getUsernameFromJwtToken(token);
+        String newToken = jwtUtil.generateJwtToken(username);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", newToken);
         return response;
     }
 }
