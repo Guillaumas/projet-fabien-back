@@ -16,3 +16,20 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   main:
     web-application-type: servlet
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OKTA_OAUTH0_ISSUER}
+          jwk-set-uri: ${OKTA_OAUTH0_ISSUER}.well-known/jwks.json
+          audiences: ${OKTA_OAUTH0_AUDIENCE}
+
+
+
+server:
+  port: 8080
+okta:
+  oauth2:
+    audience: ${OKTA_OAUTH0_AUDIENCE}
+    issuer: ${OKTA_OAUTH0_ISSUER}
+    client-id: ${OKTA_OAUTH0_CLIENT_ID}
