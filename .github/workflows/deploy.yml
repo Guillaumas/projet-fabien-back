@@ -11,12 +11,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '21'
+          distribution: 'temurin'
 
       - name: Build with Maven
         run: mvn clean package -DskipTests
@@ -34,7 +35,7 @@ jobs:
           docker push ghcr.io/${{ github.repository }}/myapp:latest
 
       - name: Deploy to Render
-        uses: johnbeynon/render-deploy-action@v0.0.8
+        uses: jakejarvis/render-deploy-action@v1
         with:
           serviceId: ${{ secrets.RENDER_SERVICE_ID }}
           apiKey: ${{ secrets.RENDER_API_KEY }}
