@@ -33,3 +33,10 @@ okta:
     audience: ${OKTA_OAUTH0_AUDIENCE}
     issuer: ${OKTA_OAUTH0_ISSUER}
     client-id: ${OKTA_OAUTH0_CLIENT_ID}
+
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
