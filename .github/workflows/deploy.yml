@@ -33,6 +33,7 @@ jobs:
         run: |
           docker build -t ghcr.io/guillaumas/projet-fabien-back/myapp:latest .
           docker push ghcr.io/guillaumas/projet-fabien-back/myapp:latest
+          
 
       - name: Deploy to Render
         uses: johnbeynon/render-deploy-action@v0.0.8
