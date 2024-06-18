@@ -35,7 +35,7 @@ jobs:
           docker push ghcr.io/${{ github.repository }}/myapp:latest
 
       - name: Deploy to Render
-        uses: jakejarvis/render-deploy-action@v1
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           serviceId: ${{ secrets.RENDER_SERVICE_ID }}
           apiKey: ${{ secrets.RENDER_API_KEY }}
