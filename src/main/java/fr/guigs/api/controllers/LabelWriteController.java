@@ -2,6 +2,7 @@ package fr.guigs.api.controllers;
 
 import fr.guigs.api.models.Label;
 import fr.guigs.api.services.LabelService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -15,18 +16,19 @@ public class LabelWriteController {
         this.labelService = labelService;
     }
 
-    @PostMapping
+    @PostMapping("/labels")
     public Label createLabel(@RequestBody Label label) {
-        return labelService.save(label);
+        return labelService.createLabel(label);
     }
 
-    @PutMapping("/{id}")
-    public Label updateLabel(@PathVariable Long id, @RequestBody Label label) {
-        return labelService.update(id, label);
+    @PutMapping("/labels/{id}")
+    public Label updateLabel(@PathVariable Long id, @RequestBody Label labelDetails) {
+        return labelService.updateLabel(id, labelDetails);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteLabel(@PathVariable Long id) {
-        labelService.delete(id);
+    @DeleteMapping("/labels/{id}")
+    public ResponseEntity<?> deleteLabel(@PathVariable Long id) {
+        labelService.deleteLabel(id);
+        return ResponseEntity.ok().build();
     }
 }

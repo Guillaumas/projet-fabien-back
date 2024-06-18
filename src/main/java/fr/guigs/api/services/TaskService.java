@@ -1,12 +1,13 @@
 package fr.guigs.api.services;
 
-import fr.guigs.api.models.Label;
+import fr.guigs.api.exceptions.ResourceNotFoundException;
 import fr.guigs.api.models.Task;
 import fr.guigs.api.repositories.LabelRepository;
 import fr.guigs.api.repositories.TaskRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TaskService {
@@ -19,42 +20,33 @@ public class TaskService {
         this.labelRepository = labelRepository;
     }
 
-    public Label addLabelToTask(Long taskId, Label label) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        task.getLabels().add(label);
-        label.getTasks().add(task);
-        labelRepository.save(label);
-        taskRepository.save(task);
-        return label;
+    public Page<Task> getAllTasks(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return taskRepository.findAll(pageable);
     }
 
-    public void delete(Long id) {
-        taskRepository.deleteById(id);
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
     }
 
-    public Task findById(Long id) {
-        return taskRepository.findById(id).orElse(null);
-    }
-
-    public Task save(Task task) {
+    public Task createTask(Task task) {
         return taskRepository.save(task);
     }
 
-    public List<Task> findAll() {
-        return taskRepository.findAll();
+    public Task updateTask(Long id, Task taskDetails) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        task.setTitle(taskDetails.getTitle());
+        task.setDescription(taskDetails.getDescription());
+
+        return taskRepository.save(task);
     }
 
-    public Task update(Long id, Task newTask) {
-        return taskRepository.findById(id)
-                .map(task -> {
-                    task.setTitle(newTask.getTitle());
-                    task.setDescription(newTask.getDescription());
-                    task.setDone(newTask.isDone());
-                    return taskRepository.save(task);
-                })
-                .orElseGet(() -> {
-                    newTask.setId(id);
-                    return taskRepository.save(newTask);
-                });
+    public void deleteTask(Long id) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        taskRepository.delete(task);
     }
 }

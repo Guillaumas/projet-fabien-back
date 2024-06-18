@@ -1,48 +1,48 @@
 package fr.guigs.api.services;
 
-import fr.guigs.api.models.Task;
+import fr.guigs.api.exceptions.ResourceNotFoundException;
 import fr.guigs.api.models.TodoList;
-import fr.guigs.api.repositories.TaskRepository;
 import fr.guigs.api.repositories.TodoListRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TodoListService {
 
     private final TodoListRepository todoListRepository;
-    private final TaskRepository taskRepository;
 
-    public TodoListService(TodoListRepository todoListRepository, TaskRepository taskRepository) {
+    public TodoListService(TodoListRepository todoListRepository) {
         this.todoListRepository = todoListRepository;
-        this.taskRepository = taskRepository;
     }
 
-    public List<TodoList> findAll() {
-        return todoListRepository.findAll();
+    public Page<TodoList> getAllTodoLists(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return todoListRepository.findAll(pageable);
     }
 
-    public TodoList save(TodoList todoList) {
+    public TodoList getTodoListById(Long id) {
+        return todoListRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("TodoList not found"));
+    }
+
+    public TodoList createTodoList(TodoList todoList) {
         return todoListRepository.save(todoList);
     }
 
-    public Task addTaskToList(Long listId, Task task) {
-        TodoList todoList = todoListRepository.findById(listId).orElseThrow(() -> new RuntimeException("List not found"));
-        task.setTodoList(todoList);
-        return taskRepository.save(task);
+    public TodoList updateTodoList(Long id, TodoList todoListDetails) {
+        TodoList todoList = todoListRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("TodoList not found"));
+
+        todoList.setTitle(todoListDetails.getTitle());
+
+        return todoListRepository.save(todoList);
     }
 
-    public TodoList update(Long listId, TodoList todoList) {
-        TodoList existingTodoList = todoListRepository.findById(listId).orElseThrow(() -> new RuntimeException("List not found"));
-        existingTodoList.setTitle(todoList.getTitle());
-        return todoListRepository.save(existingTodoList);
-    }
+    public void deleteTodoList(Long id) {
+        TodoList todoList = todoListRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("TodoList not found"));
 
-    public void deleteTaskFromList(Long listId, Long taskId) {
-        TodoList todoList = todoListRepository.findById(listId).orElseThrow(() -> new RuntimeException("List not found"));
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        todoList.getTasks().remove(task);
-        todoListRepository.save(todoList);
+        todoListRepository.delete(todoList);
     }
 }

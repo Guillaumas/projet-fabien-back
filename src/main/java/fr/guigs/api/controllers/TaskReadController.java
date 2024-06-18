@@ -2,12 +2,10 @@ package fr.guigs.api.controllers;
 
 import fr.guigs.api.models.Task;
 import fr.guigs.api.services.TaskService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -19,13 +17,16 @@ public class TaskReadController {
         this.taskService = taskService;
     }
 
-    @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.findAll();
+    @GetMapping("/tasks")
+    public Page<Task> getAllTasks(@RequestParam Optional<Integer> page,
+                                  @RequestParam Optional<Integer> size) {
+        int currentPage = page.orElse(0);
+        int pageSize = size.orElse(10);
+        return taskService.getAllTasks(currentPage, pageSize);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/tasks/{id}")
     public Task getTaskById(@PathVariable Long id) {
-        return taskService.findById(id);
+        return taskService.getTaskById(id);
     }
 }
