@@ -16,5 +16,3 @@ public class ApiApplication {
 //todo ajouter le cicd
 //todo ajouter le docker
 //todo amqp
-//todo ajouter le cache
-//todo graphql

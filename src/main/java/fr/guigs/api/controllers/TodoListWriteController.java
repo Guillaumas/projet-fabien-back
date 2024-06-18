@@ -5,21 +5,14 @@ import fr.guigs.api.models.TodoList;
 import fr.guigs.api.services.TodoListService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/todolists")
-public class TodoListController {
+public class TodoListWriteController {
 
     private final TodoListService todoListService;
 
-    public TodoListController(TodoListService todoListService) {
+    public TodoListWriteController(TodoListService todoListService) {
         this.todoListService = todoListService;
-    }
-
-    @GetMapping
-    public List<TodoList> getAllTodoLists() {
-        return todoListService.findAll();
     }
 
     @PostMapping
@@ -35,5 +28,10 @@ public class TodoListController {
     @PostMapping("/{listId}/tasks")
     public Task addTaskToList(@PathVariable Long listId, @RequestBody Task task) {
         return todoListService.addTaskToList(listId, task);
+    }
+
+    @DeleteMapping("/{listId}/tasks/{taskId}")
+    public void deleteTaskFromList(@PathVariable Long listId, @PathVariable Long taskId) {
+        todoListService.deleteTaskFromList(listId, taskId);
     }
 }

@@ -1,29 +1,18 @@
 package fr.guigs.api.controllers;
 
-import fr.guigs.api.models.Role;
 import fr.guigs.api.services.RoleService;
+import fr.guigs.api.models.Role;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/roles")
-public class RoleController {
+public class RoleWriteController {
 
     private final RoleService roleService;
 
-    public RoleController(RoleService roleService) {
+    public RoleWriteController(RoleService roleService) {
         this.roleService = roleService;
-    }
-
-    @GetMapping
-    public List<Role> getAllRoles() {
-        return roleService.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public Role getRoleById(@PathVariable Long id) {
-        return roleService.findById(id);
     }
 
     @PostMapping

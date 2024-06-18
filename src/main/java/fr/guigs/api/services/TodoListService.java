@@ -38,4 +38,11 @@ public class TodoListService {
         existingTodoList.setTitle(todoList.getTitle());
         return todoListRepository.save(existingTodoList);
     }
+
+    public void deleteTaskFromList(Long listId, Long taskId) {
+        TodoList todoList = todoListRepository.findById(listId).orElseThrow(() -> new RuntimeException("List not found"));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+        todoList.getTasks().remove(task);
+        todoListRepository.save(todoList);
+    }
 }
