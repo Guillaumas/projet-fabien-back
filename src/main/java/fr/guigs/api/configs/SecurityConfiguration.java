@@ -1,5 +1,6 @@
 package fr.guigs.api.configs;
 
+import fr.guigs.api.interceptors.AuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,7 +17,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthInterceptor authInterceptor) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults()) // Activer CORS avec les valeurs par défaut

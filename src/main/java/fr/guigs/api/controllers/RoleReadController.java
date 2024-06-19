@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping("/api")
 public class RoleReadController {
 
     private final RoleService roleService;
@@ -19,12 +19,12 @@ public class RoleReadController {
         this.roleService = roleService;
     }
 
-    @GetMapping
+    @GetMapping("/roles")
     public List<Role> getAllRoles() {
         return roleService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/roles/{id}")
     public Role getRoleById(@PathVariable Long id) {
         return roleService.findById(id);
     }

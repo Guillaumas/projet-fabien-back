@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/roles/")
+@RequestMapping("/api")
 public class RoleWriteController {
 
     private final RoleService roleService;
@@ -15,22 +15,22 @@ public class RoleWriteController {
         this.roleService = roleService;
     }
 
-    @PostMapping
+    @PostMapping("/roles")
     public Role createRole(@RequestBody Role role) {
         return roleService.save(role);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/roles/{id}")
     public Role updateRole(@PathVariable Long id, @RequestBody Role role) {
         return roleService.update(id, role);
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping("/roles/{id}")
     public Role patchRole(@PathVariable Long id, @RequestBody Role role) {
         return roleService.patch(id, role);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/roles/{id}")
     public void deleteRole(@PathVariable Long id) {
         roleService.delete(id);
     }
