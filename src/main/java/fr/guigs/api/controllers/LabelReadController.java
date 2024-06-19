@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/labels")
+@RequestMapping("/api")
 public class LabelReadController {
 
     private final LabelService labelService;
