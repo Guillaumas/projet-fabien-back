@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/tasks/")
 public class TaskWriteController {
 
     private final TaskService taskService;
@@ -15,17 +15,22 @@ public class TaskWriteController {
         this.taskService = taskService;
     }
 
-    @PostMapping("/tasks")
+    @PostMapping()
     public Task createTask(@RequestBody Task task) {
         return taskService.createTask(task);
     }
 
-    @PutMapping("/tasks/{id}")
+    @PutMapping("{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
         return taskService.updateTask(id, taskDetails);
     }
 
-    @DeleteMapping("/tasks/{id}")
+    @PatchMapping("{id}")
+    public Task patchTask(@PathVariable Long id, @RequestBody Task taskDetails) {
+        return taskService.patchTask(id, taskDetails);
+    }
+
+    @DeleteMapping("{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.ok().build();

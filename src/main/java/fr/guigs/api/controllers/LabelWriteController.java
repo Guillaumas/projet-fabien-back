@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/labels/")
 public class LabelWriteController {
 
     private final LabelService labelService;
@@ -16,17 +16,17 @@ public class LabelWriteController {
         this.labelService = labelService;
     }
 
-    @PostMapping("/labels")
+    @PostMapping()
     public Label createLabel(@RequestBody Label label) {
         return labelService.createLabel(label);
     }
 
-    @PutMapping("/labels/{id}")
+    @PutMapping("{id}")
     public Label updateLabel(@PathVariable Long id, @RequestBody Label labelDetails) {
         return labelService.updateLabel(id, labelDetails);
     }
 
-    @DeleteMapping("/labels/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<?> deleteLabel(@PathVariable Long id) {
         labelService.deleteLabel(id);
         return ResponseEntity.ok().build();

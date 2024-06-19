@@ -43,6 +43,27 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    public Task patchTask(Long id, Task taskDetails) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        if (taskDetails.getTitle() != null) {
+            task.setTitle(taskDetails.getTitle());
+        }
+        if (taskDetails.getDescription() != null) {
+            task.setDescription(taskDetails.getDescription());
+        }
+        if (taskDetails.getLabels() != null) {
+            task.setLabels(taskDetails.getLabels());
+        }
+        if (taskDetails.isDone() != task.isDone()) {
+            task.setDone(taskDetails.isDone());
+        }
+
+
+        return taskRepository.save(task);
+    }
+
     public void deleteTask(Long id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));

@@ -12,7 +12,6 @@ import java.awt.print.Pageable;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
     boolean existsByUsername(String username);
-/*
-    Page<User> findAllByOrderByUsernameAsc(Pageable pageable);
-*/
+    User findByAuth0Id(String auth0Id);
+
 }

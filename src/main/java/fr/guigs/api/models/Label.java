@@ -14,11 +14,12 @@ public class Label {
 
     private String name;
 
-    @ManyToMany(mappedBy = "labels")
-    private Set<Task> tasks;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany(mappedBy = "labels")
-    private Set<User> users;
+    private Set<Task> tasks;
 
 }
 

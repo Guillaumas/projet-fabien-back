@@ -45,4 +45,18 @@ public class TodoListService {
 
         todoListRepository.delete(todoList);
     }
+
+    public TodoList patchTodoList(Long id, TodoList todoListDetails) {
+        TodoList todoList = todoListRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("TodoList not found"));
+
+        if (todoListDetails.getTitle() != null) {
+            todoList.setTitle(todoListDetails.getTitle());
+        }
+        if (todoListDetails.getTasks() != todoList.getTasks()) {
+            todoList.setTasks(todoListDetails.getTasks());
+        }
+
+        return todoListRepository.save(todoList);
+    }
 }

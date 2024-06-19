@@ -15,6 +15,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String password;
     private String username;
 
@@ -25,12 +26,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<TodoList> todoLists;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_labels",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "label_id")
-    )
+    @OneToMany(mappedBy = "user")
     private Set<Label> labels;
+
+    @Column(unique = true, nullable = false)
+    private String auth0Id;
 
 }

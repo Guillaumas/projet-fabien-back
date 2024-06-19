@@ -39,6 +39,20 @@ public class RoleService {
                 });
     }
 
+    public Role patch(Long id, Role newRole) {
+        return roleRepository.findById(id)
+                .map(role -> {
+                    if (newRole.getName() != null) {
+                        role.setName(newRole.getName());
+                    }
+                    return roleRepository.save(role);
+                })
+                .orElseGet(() -> {
+                    newRole.setId(id);
+                    return roleRepository.save(newRole);
+                });
+    }
+
     public void delete(Long id) {
         roleRepository.deleteById(id);
     }

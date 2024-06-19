@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/todolists/")
 public class TodoListWriteController {
 
     private final TodoListService todoListService;
@@ -15,17 +15,22 @@ public class TodoListWriteController {
         this.todoListService = todoListService;
     }
 
-    @PostMapping("/todolists")
+    @PostMapping()
     public TodoList createTodoList(@RequestBody TodoList todoList) {
         return todoListService.createTodoList(todoList);
     }
 
-    @PutMapping("/todolists/{id}")
+    @PutMapping("{id}")
     public TodoList updateTodoList(@PathVariable Long id, @RequestBody TodoList todoListDetails) {
         return todoListService.updateTodoList(id, todoListDetails);
     }
 
-    @DeleteMapping("/todolists/{id}")
+    @PatchMapping("{id}")
+    public TodoList patchTodoList(@PathVariable Long id, @RequestBody TodoList todoListDetails) {
+        return todoListService.patchTodoList(id, todoListDetails);
+    }
+
+    @DeleteMapping("{id}")
     public ResponseEntity<?> deleteTodoList(@PathVariable Long id) {
         todoListService.deleteTodoList(id);
         return ResponseEntity.ok().build();

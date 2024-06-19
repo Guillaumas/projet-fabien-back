@@ -38,6 +38,21 @@ public class LabelService {
         return labelRepository.save(label);
     }
 
+    public Label patchLabel(Long id, Label labelDetails) {
+        Label label = labelRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Label not found"));
+
+        if (labelDetails.getName() != null) {
+            label.setName(labelDetails.getName());
+        }
+
+        if (labelDetails.getTasks() != label.getTasks()) {
+            label.setTasks(labelDetails.getTasks());
+        }
+
+        return labelRepository.save(label);
+    }
+
     public void deleteLabel(Long id) {
         Label label = labelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Label not found"));
