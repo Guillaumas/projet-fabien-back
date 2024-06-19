@@ -4,7 +4,6 @@ package fr.guigs.api.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -17,8 +16,8 @@ public class Role {
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-    private Set<User> users = new HashSet<>();
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    private Set<User> users;
 }
 
 

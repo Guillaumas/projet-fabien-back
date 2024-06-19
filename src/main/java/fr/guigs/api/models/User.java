@@ -15,16 +15,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String username;
     private String password;
+    private String username;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private Set<TodoList> todoLists;
+
+    @ManyToMany
     @JoinTable(
-            name = "user_roles",
+            name = "user_labels",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            inverseJoinColumns = @JoinColumn(name = "label_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Label> labels;
 
 }

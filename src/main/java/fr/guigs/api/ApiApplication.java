@@ -10,6 +10,4 @@ public class ApiApplication {
 	}
 }
 
-//todo ajouter la pagination
-//todo ajouter le auth0
 //todo amqp

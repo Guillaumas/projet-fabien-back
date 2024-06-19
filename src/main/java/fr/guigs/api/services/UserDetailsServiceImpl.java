@@ -1,5 +1,6 @@
 package fr.guigs.api.services;
 
+import fr.guigs.api.models.Role;
 import fr.guigs.api.models.User;
 import fr.guigs.api.repositories.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,8 +30,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
+        Role role = user.getRole();
+        if (role != null) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }

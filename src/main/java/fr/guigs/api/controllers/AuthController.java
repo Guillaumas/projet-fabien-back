@@ -39,7 +39,7 @@ public class AuthController {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(roleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Role not found"))));
+        user.setRole(roleRepository.findById(1L).orElseThrow(() -> new RuntimeException("Role not found")));
         userRepository.save(user);
         return "User registered successfully";
     }
