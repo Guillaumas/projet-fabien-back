@@ -31,4 +31,20 @@ public class LabelReadController {
     public Label getLabelById(@PathVariable Long id) {
         return labelService.getLabelById(id);
     }
+
+    @GetMapping("/tasks/{taskId}/labels")
+    public Page<Label> getLabelsByTaskId(@PathVariable Long taskId, @RequestParam Optional<Integer> page,
+                                         @RequestParam Optional<Integer> size) {
+        int currentPage = page.orElse(0);
+        int pageSize = size.orElse(10);
+        return labelService.getLabelsByTaskId(taskId, currentPage, pageSize);
+    }
+
+    @GetMapping("/users/{userId}/labels")
+    public Page<Label> getAllLabelsByUserId(@PathVariable Long userId, @RequestParam Optional<Integer> page,
+                                            @RequestParam Optional<Integer> size) {
+        int currentPage = page.orElse(0);
+        int pageSize = size.orElse(10);
+        return labelService.getAllLabelsByUserId(userId, currentPage, pageSize);
+    }
 }

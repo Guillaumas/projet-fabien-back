@@ -25,6 +25,16 @@ public class LabelService {
         return labelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Label not found"));
     }
 
+    public Page<Label> getLabelsByTaskId(Long taskId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return labelRepository.findAllByTaskId(taskId, pageable);
+    }
+
+    public Page<Label> getAllLabelsByUserId(Long userId, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return labelRepository.findAllByUserId(userId, pageable);
+}
+
     public Label createLabel(Label label) {
         return labelRepository.save(label);
     }

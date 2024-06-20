@@ -29,6 +29,16 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
     }
 
+    public Page<Task> getTasksByLabelId(Long labelId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return taskRepository.findByLabelsId(labelId, pageable);
+    }
+
+    public Page<Task> getTasksByTodoListId(Long todoListId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return taskRepository.findByTodoListId(todoListId, pageable);
+    }
+
     public Task createTask(Task task) {
         return taskRepository.save(task);
     }

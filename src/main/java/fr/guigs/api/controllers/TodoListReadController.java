@@ -29,4 +29,13 @@ public class TodoListReadController {
     public TodoList getTodoListById(@PathVariable Long id) {
         return todoListService.getTodoListById(id);
     }
+
+
+    @GetMapping("/todolists/user/{userId}")
+    public Page<TodoList> getAllTodoListsByUserId(@PathVariable Long userId, @RequestParam Optional<Integer> page,
+                                                  @RequestParam Optional<Integer> size) {
+        int currentPage = page.orElse(0);
+        int pageSize = size.orElse(10);
+        return todoListService.getAllTodoListsByUserId(userId, currentPage, pageSize);
+    }
 }

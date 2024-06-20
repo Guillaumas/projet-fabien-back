@@ -25,6 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     public static String userId = null;
 
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Enumeration<String> headerNames = request.getHeaderNames();
@@ -33,7 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             if (headerName.equalsIgnoreCase("UserId") || headerName.equalsIgnoreCase("userid")) {
                 userId = request.getHeader(headerName);
                 System.out.println(userId);
-                break;
+                return true;
             }
         }
         if (userId == null) {
@@ -54,7 +55,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private String extractAuth0IdFromToken(String token) {
+    public String extractAuth0IdFromToken(String token) {
         String[] parts = token.split("\\.");
         if (parts.length != 3) {
             throw new RuntimeException("Invalid token");

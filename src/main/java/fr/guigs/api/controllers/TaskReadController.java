@@ -29,4 +29,13 @@ public class TaskReadController {
     public Task getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id);
     }
+
+    @GetMapping("todoLists/{todoListId}/tasks")
+    public Page<Task> getTasksByTodoListId(@PathVariable Long todoListId,
+                                          @RequestParam Optional<Integer> page,
+                                          @RequestParam Optional<Integer> size) {
+        int currentPage = page.orElse(0);
+        int pageSize = size.orElse(10);
+        return taskService.getTasksByTodoListId(todoListId, currentPage, pageSize);
+    }
 }

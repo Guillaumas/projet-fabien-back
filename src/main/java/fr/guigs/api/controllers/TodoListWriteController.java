@@ -20,6 +20,11 @@ public class TodoListWriteController {
         return todoListService.createTodoList(todoList);
     }
 
+    @PostMapping("/todolists/user/{userId}")
+    public TodoList createTodoList(@PathVariable Long userId, @RequestBody TodoList todoList) {
+        return todoListService.createTodoList(userId, todoList);
+    }
+
     @PutMapping("/todolists/{id}")
     public TodoList updateTodoList(@PathVariable Long id, @RequestBody TodoList todoListDetails) {
         return todoListService.updateTodoList(id, todoListDetails);
